@@ -4,16 +4,17 @@ import 'package:dartsicord/dartsicord.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const availableCommands = [
-  '!astolfo',
-  '!astolfo unknown',
-  '!astolfo safe',
-  '!astolfo questionable',
-  '!astolfo explicit',
-];
+final String prefix = '!astolfo';
+final List<String> availableCommands = [
+  '',
+  'unknown',
+  'safe',
+  'questionable',
+  'explicit',
+].map((String command) => '${prefix} ${command}');
 
 class Bot {
-  String _token = '';
+  String _token;
   final DiscordClient _client = new DiscordClient();
 
   Bot(token) {
