@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:astolfo_discord_bot/bot.dart';
+import 'package:astolfo_discord_bot/Bot.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
