@@ -1,0 +1,14 @@
+name: astolfo_discord_bot
+description: A Discord bot written in Google Dart.
+# version: 1.0.0
+# homepage: https://www.example.com
+# author: mrv <email@example.com>
+
+environment:
+  sdk: '>=2.1.0 <3.0.0'
+
+#dependencies:
+#  path: ^1.4.1
+
+dev_dependencies:
+  test: ^1.0.0
