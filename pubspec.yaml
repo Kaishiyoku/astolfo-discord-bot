@@ -7,8 +7,9 @@ description: A Discord bot written in Google Dart.
 environment:
   sdk: '>=2.1.0 <3.0.0'
 
-#dependencies:
-#  path: ^1.4.1
+dependencies:
+  dartsicord:
+    git: https://github.com/voximity/dartsicord.git
 
 dev_dependencies:
   test: ^1.0.0
