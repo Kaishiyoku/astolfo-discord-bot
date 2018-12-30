@@ -1,21 +1,16 @@
-import 'dart:io';
-
 import 'package:dartsicord/dartsicord.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'commands/RandomImageCommand.dart';
+import 'dart:mirrors';
+import 'commands/CommandException.dart';
 
 final String prefix = '!astolfo';
-final List<String> availableCommands = [
-  '',
-  'unknown',
-  'safe',
-  'questionable',
-  'explicit',
-].map((String command) => '${prefix} ${command}');
 
 class Bot {
   String _token;
   final DiscordClient _client = new DiscordClient();
+  final List<Object> _commands = [
+    RandomImageCommand,
+  ];
 
   Bot(token) {
     _token = token;
@@ -25,17 +20,28 @@ class Bot {
     _client.onMessage.listen((event) async {
       final String adjustedMessage = event.message.content.toLowerCase();
 
-      if (availableCommands.contains(adjustedMessage)) {
-        final String uri = adjustedMessage.split(' ').length > 1 ? adjustedMessage.split(' ')[1] : '';
+      if (adjustedMessage == prefix) {
+        // TODO: make message generic
+        event.message.reply('```Available commands:\n'
+            + '!astolfo safe|questionable|explicit```');
+      }
 
-        await http.get('https://astolfo.rocks/api/v1/images/random/${uri}', headers: {HttpHeaders.CONTENT_TYPE: "application/json"}).then((response) {
-          var json = jsonDecode(response.body);
+      if (adjustedMessage.startsWith('${prefix} ')) {
+        final String commandMessage = adjustedMessage.substring(prefix.length + 1);
 
-          event.message.reply('Rating: ${json['rating']}\nViews: ${json['views']}\n<http://unlimitedastolfo.works/post/view/${json['external_id']}>\n${json['url']}');
-        }).catchError((e) {
-          print('https://astolfo.rocks/api/v1/images/random/${uri}');
-          event.message.reply('There was an error getting an image of Astolfo :cry:');
+        // iterate commands
+        bool result = _commands.fold(false, (previousValue, Object command) {
+          ClassMirror classMirror = reflectClass(command);
+          InstanceMirror instanceMirror = classMirror.newInstance(new Symbol(''),[]);
+
+          return previousValue || instanceMirror.invoke(#call, [commandMessage, event]).reflectee;
         });
+
+        if (!result) {
+          print('Command not found: ${commandMessage}');
+
+          event.message.reply('Command not found :open_mouth:');
+        }
       }
     });
 
