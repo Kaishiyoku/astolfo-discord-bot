@@ -1,7 +1,9 @@
-import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'CommandException.dart';
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+
+import 'CommandException.dart';
 
 class BaseCommand {
   static const BASE_URL = 'https://astolfo.rocks/api/v1/images/random';

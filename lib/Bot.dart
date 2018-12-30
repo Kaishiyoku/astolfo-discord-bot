@@ -1,11 +1,15 @@
-import 'package:dartsicord/dartsicord.dart';
-import 'commands/RandomImageCommand.dart';
 import 'dart:mirrors';
-import 'commands/CommandException.dart';
+
+import 'package:dartsicord/dartsicord.dart';
+import 'package:logging/logging.dart';
+
+import 'commands/RandomImageCommand.dart';
 
 final String prefix = '!astolfo';
 
 class Bot {
+  final _logger = Logger('Bot');
+
   String _token;
   final DiscordClient _client = new DiscordClient();
   final List<Object> _commands = [
@@ -38,7 +42,7 @@ class Bot {
         });
 
         if (!result) {
-          print('Command not found: ${commandMessage}');
+          _logger.warning('Command not found: ${commandMessage}');
 
           event.message.reply('Command not found :open_mouth:');
         }

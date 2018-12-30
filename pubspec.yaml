@@ -10,6 +10,8 @@ environment:
 dependencies:
   dartsicord:
     git: https://github.com/voximity/dartsicord.git
+  logging: ^0.11.3
+  intl: ^0.15.7
 
 dev_dependencies:
   test: ^1.0.0
