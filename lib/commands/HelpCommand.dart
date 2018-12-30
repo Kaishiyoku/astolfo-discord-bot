@@ -1,5 +1,6 @@
 import 'dart:mirrors';
 
+import 'package:dartsicord/dartsicord.dart';
 import 'package:logging/logging.dart';
 
 import 'BaseCommand.dart';
@@ -11,6 +12,7 @@ class HelpCommand extends BaseCommand {
 
   final Map<String, Function> _commands = {
     'help': showHelp,
+    'author': showAuthor,
   };
 
   HelpCommand(this._availableCommands);
@@ -41,5 +43,9 @@ class HelpCommand extends BaseCommand {
     });
 
     event.message.reply('```${availableCommandsAsString}```');
+  };
+
+  static Function showAuthor = (logger, availableCommands, event) async {
+    event.message.reply('My creator is <@278949013502296064> (https://astolfo.rocks)');
   };
 }
