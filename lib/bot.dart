@@ -1,4 +1,16 @@
+import 'dart:io';
+
 import 'package:dartsicord/dartsicord.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+const availableCommands = [
+  '!astolfo',
+  '!astolfo unknown',
+  '!astolfo safe',
+  '!astolfo questionable',
+  '!astolfo explicit',
+];
 
 class Bot {
   String _token = '';
@@ -10,8 +22,19 @@ class Bot {
 
   void run() {
     _client.onMessage.listen((event) async {
-      if (event.message.content.toLowerCase() == '!astolfo') {
-        await event.message.reply('pong');
+      final String adjustedMessage = event.message.content.toLowerCase();
+
+      if (availableCommands.contains(adjustedMessage)) {
+        final String uri = adjustedMessage.split(' ').length > 1 ? adjustedMessage.split(' ')[1] : '';
+
+        print(uri);
+
+        await http.get('https://astolfo.rocks/api/v1/images/random/' + uri, headers: {HttpHeaders.CONTENT_TYPE: "application/json"}).then((response) {
+
+          var json = jsonDecode(response.body);
+
+          event.message.reply('Rating: ${json['rating']}\nViews: ${json['views']}\n<http://unlimitedastolfo.works/post/view/${json['external_id']}>\n${json['url']}');
+        });
       }
     });
 
