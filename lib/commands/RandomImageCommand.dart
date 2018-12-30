@@ -6,30 +6,14 @@ import 'CommandException.dart';
 class RandomImageCommand extends BaseCommand {
   final _logger = Logger('RandomImageCommand');
 
-  final List<Object> _availableCommands;
-
-  final Map<String, Function> _commands = {
+  @override
+  final Map<String, Function> commands = {
     'safe': retrieveRandomImage('safe'),
     'questionable': retrieveRandomImage('questionable'),
     'explicit': retrieveRandomImage('explicit'),
   };
 
-  RandomImageCommand(this._availableCommands);
-
-  get commands => _commands;
-
-  bool call(String commandMessage, event) {
-    if (_commands.containsKey(commandMessage)) {
-      _logger.info('Command called: ${commandMessage}');
-
-      Function commandFn = _commands[commandMessage];
-      commandFn(_logger, _availableCommands, event);
-
-      return true;
-    }
-
-    return false;
-  }
+  RandomImageCommand(List<Object> availableCommands) : super(availableCommands);
 
   static Function retrieveRandomImage = ([String uri = '']) => (logger, availableCommands, event) async {
     try {
