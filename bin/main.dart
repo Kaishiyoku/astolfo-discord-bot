@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 main(List<String> arguments) {
-  Logger.root.level = Level.ALL;
+  Logger.root.level = Level.INFO;
   Logger.root.onRecord.listen((record) async {
     DateFormat dateFormat = new DateFormat('yyyy-MM-dd H:m:s');
     String formattedTime = dateFormat.format(record.time);
